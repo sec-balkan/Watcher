@@ -1,0 +1,39 @@
+{
+    "patterns": [
+        {
+            "name": "American Express Credit Card",
+            "description": "American Express Credit Card",
+            "regexx": "^3[47]\\d{13,14}$"
+        },
+        {
+            "name": "MasterCard Credit Card",
+            "description": "MasterCard Credit Card",
+            "regexx": "^5[1-5]\\d{2}(| |-)(?:\\d{4}\\1){2}\\d{4}$"
+        },
+        {
+            "name": "Visa Credit Card",
+            "description": "Visa Credit Card",
+            "regexx": "^4\\d{3}(| |-)(?:\\d{4}\\1){2}\\d{4}$"
+        },
+        {
+            "name": "Mail Address",
+            "description": "Mail Address",
+            "regexx": "^[-!#-'*+\\/-9=?^-~]+(?:\\.[-!#-'*+\\/-9=?^-~]+)*@[-!#-'*+\\/-9=?^-~]+(?:\\.[-!#-'*+\\/-9=?^-~]+)+$"
+        },
+        {
+            "name": "Secret Key",
+            "description": "AWS - Secret Access Key",
+            "regexx": "(?<![A-Za-z0-9/+=])[A-Za-z0-9/+=]{40}(?![A-Za-z0-9/+=])"
+        },
+        {
+            "name": "AKID",
+            "description": "AWS - Access Key ID",
+            "regexx": "(?<![A-Z0-9])[A-Z0-9]{20}(?![A-Z0-9])"
+        },
+        {
+            "name": "JWT",
+            "description": "JSON Web Token (JWT)",
+            "regexx": "\\b([A-Za-z0-9_-]{10,})\\.([A-Za-z0-9_-]{10,})\\.([A-Za-z0-9_-]{10,})\\b"
+        }
+    ]
+}
