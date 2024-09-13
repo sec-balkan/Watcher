@@ -5,4 +5,4 @@ Finding secrets in CloudWatch logs.
 
 ### IAM Permissions
 
->**Masked Data**: Some values may be masked. In order to see them, the IAM `logs:Unmask` permission is needed.
+>**Masked Data**: Some values may be masked. In order to see them, the IAM permission `logs:Unmask` is needed.
