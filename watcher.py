@@ -10,7 +10,7 @@ from pathlib import Path
 DEFAULT_REGION = 'us-east-1'
 
 def ascii():
-    print(" _       __        __         __               ")
+    print(f"\n _       __        __         __               ")
     print("| |     / /____ _ / /_ _____ / /_   ___   _____")
     print("| | /| / // __ `// __// ___// __ \\ / _ \\ / ___/")
     print("| |/ |/ // /_/ // /_ / /__ / / / //  __// /    ")
@@ -107,7 +107,7 @@ def search_secrets_in_logs(log_groups_streams, patterns):
                         print(f"\nPotential secret found in {log_group}/{log_stream} (Region: {region}):")
                         print(f"  - Rule Name: {pattern['name']}")
                         print(f"  - Description: {pattern['description']}")
-                        print(f"  - Matched Secret: {secret}\n")
+                        print(f"  - Matched Secret: {secret}")
         
         except ClientError:
             continue
