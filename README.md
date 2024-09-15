@@ -3,6 +3,16 @@ Finding secrets in CloudWatch logs.
 
 ## Technical Information
 
+### Logs
+
+By default, Watcher will search the logs generated in the last hour, as can be read in the script file:
+
+```
+time_source = int((datetime.utcnow() - timedelta(hours=1)).timestamp() * 1000)
+```
+
+To search within more hours, modify the `1` number with the desired hours.
+
 ### AWS Keys
 
 `boto3` will grab the AWS keys from:
@@ -21,6 +31,7 @@ Example output:
 
 ```
 $ python3 watcher.py
+
  _       __        __         __               
 | |     / /____ _ / /_ _____ / /_   ___   _____
 | | /| / // __ `// __// ___// __ \ / _ \ / ___/
