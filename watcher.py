@@ -1,10 +1,10 @@
 import boto3
 import re
 import json
+import sys
 from botocore.exceptions import NoCredentialsError, PartialCredentialsError, ClientError, NoRegionError
 from tabulate import tabulate
 from datetime import datetime, timedelta
-import time
 from pathlib import Path
 
 DEFAULT_REGION = 'us-east-1'
@@ -29,19 +29,19 @@ def check_aws_credentials():
         print("[✓] AWS Credentials: Valid")
     except NoCredentialsError:
         print("[X] AWS Credentials: Not found")
-        return False
+        sys.exit(1)
     except PartialCredentialsError:
         print("[X] AWS Credentials: Incomplete")
-        return False
+        sys.exit(1)
     except ClientError as e:
         if "ExpiredToken" in str(e):
             print("[X] AWS Credentials: Expired")
         else:
             print(f"[X] AWS Credentials: Error - {str(e)}")
-        return False
+        sys.exit(1)
     except NoRegionError:
         print("[X] AWS Region: Not specified")
-        return False
+        sys.exit(1)
     return True
 
 def check_permissions():
@@ -51,8 +51,8 @@ def check_permissions():
         print(f"[✓] CloudWatch Permissions: OK\n")
     except ClientError as e:
         if 'AccessDeniedException' in str(e):
-            print("CloudWatch Permissions: Access Denied")
-        return False
+            print("[X] CloudWatch Permissions: Access Denied")
+        sys.exit(1)
     return True
 
 def list_log_groups_and_streams():
@@ -82,6 +82,7 @@ def list_log_groups_and_streams():
         print(tabulate(all_log_groups_streams, headers=["Region", "Log Group", "Log Stream"], tablefmt="grid"))
     else:
         print("[X] No log groups or streams found in any region")
+        sys.exit(1)
     
     return all_log_groups_streams
 
@@ -117,7 +118,6 @@ def search_secrets_in_logs(log_groups_streams, patterns):
     
     if not found_any_secrets:
         print(f"\n[X] No secrets found in logs")
-        return
 
 def main():
 
@@ -128,13 +128,13 @@ def main():
         patterns = load_patterns()
     else:
         print("[X] Patterns not found")
-        return
+        sys.exit(1)
 
     if not check_aws_credentials():
-        return
+        sys.exit(1)
 
     if not check_permissions():
-        return
+        sys.exit(1)
 
     log_groups_streams = list_log_groups_and_streams()
 
