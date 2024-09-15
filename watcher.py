@@ -92,6 +92,8 @@ def search_secrets_in_logs(log_groups_streams, patterns):
 
     print(f"\n[✓] Searching logs from {datetime.utcfromtimestamp(time_source / 1000):%Y-%m-%d %H:%M:%S} to {datetime.utcfromtimestamp(current_time / 1000):%Y-%m-%d %H:%M:%S}")
 
+    found_any_secrets = False
+
     for region, log_group, log_stream in log_groups_streams:
         logs_client = boto3.client('logs', region_name=region)
         
@@ -103,6 +105,7 @@ def search_secrets_in_logs(log_groups_streams, patterns):
                 for pattern in patterns:
                     matches = re.finditer(pattern['regexx'], message)
                     for match in matches:
+                        found_any_secrets = True
                         secret = match.group(0)
                         print(f"\nPotential secret found in {log_group}/{log_stream} (Region: {region}):")
                         print(f"  - Rule Name: {pattern['name']}")
@@ -111,6 +114,10 @@ def search_secrets_in_logs(log_groups_streams, patterns):
         
         except ClientError:
             continue
+    
+    if not found_any_secrets:
+        print(f"\n[X] No secrets found in logs")
+        return
 
 def main():
 
@@ -133,8 +140,6 @@ def main():
 
     if log_groups_streams:
         search_secrets_in_logs(log_groups_streams, patterns)
-    else:
-        print("[X] No secrets were found")
 
 if __name__ == "__main__":
     main()
